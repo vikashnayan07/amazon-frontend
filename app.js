@@ -10,6 +10,7 @@ import SignUp from "./src/pages/singnUp";
 import ProductDetail from "./src/components/ProductDetail";
 import SignIn from "./src/pages/singIn";
 import { Toaster } from "react-hot-toast";
+import CartPage from "./src/pages/CartPage";
 
 const parent = document.getElementById("root");
 const root = ReactDOM.createRoot(parent);
@@ -52,6 +53,10 @@ const App = () => {
       path: "/signin",
       element: loggedInUser ? <HomePage /> : <SignIn />,
     },
+    {
+      path: "/cart",
+      element: loggedInUser ? <CartPage /> : <SignUp />,
+    },
   ]);
 
   const addToCart = (elem) => {
@@ -60,6 +65,8 @@ const App = () => {
     if (isPresent === -1) {
       const newCart = [...cart];
       newCart.push({
+        stock: elem.availabilityStatus,
+        image: elem.thumbnail,
         title: elem.title,
         id: elem.id,
         price: elem.price,
