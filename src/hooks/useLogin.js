@@ -11,23 +11,19 @@ const useLogin = () => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({
-        email,
-
-        password,
-      }),
+      body: JSON.stringify(mobile ? { mobile, password } : { email, password }),
     };
     const res = await fetch(URL, OPTIONS);
     const data = await res.json();
     if (data.message === "Login successful") {
       appLogin(data.data.user);
       localStorage.setItem("authorization", data.data.token);
+      toast.success("Login successful");
     } else {
-      alert("Invalid");
+      toast.error("Invalid email or password");
     }
 
     console.log(data);
-    toast.success("Login successful ");
   };
   return { userSignin };
 };

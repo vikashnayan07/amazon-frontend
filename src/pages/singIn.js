@@ -4,15 +4,54 @@ import { useState } from "react";
 
 const SignIn = () => {
   const { userSignin } = useLogin();
-  const [email, setEmail] = useState("");
+  const [emailOrMobile, setEmailOrMobile] = useState("");
   const [password, setPassword] = useState("");
+  const [emailOrMobileError, setEmailOrMobileError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [generalError, setGeneralError] = useState("");
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validateMobile = (mobile) => {
+    const re = /^[0-9]{10}$/;
+    return re.test(String(mobile));
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
 
   const validate = () => {
-    let validation = true;
-    if (validation) {
-      userSignin({ email, password });
+    let isValid = true;
+
+    if (!validateEmail(emailOrMobile) && !validateMobile(emailOrMobile)) {
+      setEmailOrMobileError(
+        "Please enter a valid email or 10-digit mobile number."
+      );
+      isValid = false;
     } else {
-      alert("invalid user");
+      setEmailOrMobileError("");
+    }
+
+    if (!validatePassword(password)) {
+      setPasswordError("Password must be at least 6 characters long.");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    if (isValid) {
+      const payload = validateEmail(emailOrMobile)
+        ? { email: emailOrMobile, password }
+        : { mobile: emailOrMobile, password };
+      userSignin(payload);
+    } else {
+      setGeneralError(
+        "Invalid input. Please correct the errors and try again."
+      );
     }
   };
 
@@ -28,6 +67,13 @@ const SignIn = () => {
 
         <div className="signup-box">
           <h3>Sign in or create account</h3>
+          <div className="customer-link">
+            No account? Create one!{" "}
+            <Link to="/signup" className="signin-link">
+              {" "}
+              Signup
+            </Link>
+          </div>
 
           <form
             onSubmit={(e) => {
@@ -42,20 +88,29 @@ const SignIn = () => {
                 <input
                   type="text"
                   name="username"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={emailOrMobile}
+                  onChange={(e) => setEmailOrMobile(e.target.value)}
                 />
               </div>
+              {emailOrMobileError && (
+                <div className="error-message">{emailOrMobileError}</div>
+              )}
             </div>
             <div className="input-group">
               <label>Password</label>
               <input
-                type="text"
+                type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              {passwordError && (
+                <div className="error-message">{passwordError}</div>
+              )}
             </div>
+            {generalError && (
+              <div className="error-message">{generalError}</div>
+            )}
             <button className="signup-button" type="submit">
               Continue
             </button>
@@ -86,4 +141,5 @@ const SignIn = () => {
     </>
   );
 };
+
 export default SignIn;

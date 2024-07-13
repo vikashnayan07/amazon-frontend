@@ -1,5 +1,6 @@
-import toast from "react-hot-toast";
-import { Navigate, useNavigate } from "react-router-dom";
+// useSignup.js
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useSignup = () => {
   const signUp = async ({ name, mobile, email, password }) => {
@@ -7,7 +8,7 @@ const useSignup = () => {
     const OPTIONS = {
       method: "POST",
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name,
@@ -18,8 +19,16 @@ const useSignup = () => {
     };
     const res = await fetch(URL, OPTIONS);
     const data = await res.json();
-    console.log(data);
-    toast.success("User Created Succesfully ");
+
+    if (res.status === 201) {
+      return true;
+    } else if (res.status === 400 && data.message === "User already exists") {
+      toast.error("User already exists!");
+    } else {
+      toast.error("An error occurred. Please try again.");
+    }
+
+    return false;
   };
   return { signUp };
 };

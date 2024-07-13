@@ -34,15 +34,15 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: loggedInUser ? <SignUp /> : <HomePage />,
+      element: loggedInUser ? <HomePage /> : <SignUp />,
     },
     {
       path: "/search",
-      element: loggedInUser ? <SignUp /> : <SearchPage />,
+      element: loggedInUser ? <SearchPage /> : <SignUp />,
     },
     {
       path: "/search/:id",
-      element: loggedInUser ? <SignUp /> : <ProductDetail />,
+      element: loggedInUser ? <ProductDetail /> : <SignUp />,
     },
     {
       path: "/signup",

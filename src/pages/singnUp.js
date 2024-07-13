@@ -1,30 +1,42 @@
+// SignUp.js
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useSignup from "../hooks/useSignup";
-import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const { signUp } = useSignup();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
+  const [errors, setErrors] = useState({});
 
-  const handleEmail = (e) => {
-    const val = e.target.value;
-    setEmail(val);
-  };
-  const handlePassword = (e) => {
-    const val = e.target.value;
-    setPassword(val);
-  };
+  const validate = async () => {
+    const newErrors = {};
 
-  const validate = () => {
-    let validation = true;
-    if (validation) {
-      signUp({ email, password, name, mobile });
-    } else {
-      alert("invalid user");
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email is invalid";
+    }
+    if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+    if (!/^[6-9]\d{9}$/.test(mobile)) {
+      newErrors.mobile = "Invalid mobile number";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      const success = await signUp({ email, password, name, mobile });
+      if (success) {
+        toast.success("User created successfully!");
+        setTimeout(() => {
+          navigate("/signin");
+        }, 1500);
+      }
     }
   };
 
@@ -43,7 +55,6 @@ const SignUp = () => {
           <div className="customer-link">
             Already a customer?{" "}
             <Link to="/signin" className="signin-link">
-              {" "}
               Sign in
             </Link>
           </div>
@@ -56,7 +67,6 @@ const SignUp = () => {
             <div className="input-group">
               <label>Mobile number</label>
               <div className="input-mobile">
-                {" "}
                 <select className="option-mobile">
                   <option>IN +91</option>
                 </select>
@@ -67,6 +77,7 @@ const SignUp = () => {
                   onChange={(e) => setMobile(e.target.value)}
                 />
               </div>
+              {errors.mobile && <div className="error">{errors.mobile}</div>}
             </div>
             <div className="input-group">
               <label>Your name</label>
@@ -80,11 +91,12 @@ const SignUp = () => {
             <div className="input-group">
               <label>Email</label>
               <input
-                type="email"
+                type="text"
                 value={email}
-                onChange={handleEmail}
-                placeholder="First and last name"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
               />
+              {errors.email && <div className="error">{errors.email}</div>}
             </div>
             <div className="input-group">
               <label htmlFor="password">Password (at least 6 characters)</label>
@@ -92,10 +104,13 @@ const SignUp = () => {
                 type="password"
                 name="password"
                 value={password}
-                onChange={handlePassword}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
               />
-              <span> Passwords must be at least 6 characters.</span>
+              {errors.password && (
+                <div className="error">{errors.password}</div>
+              )}
+              <span>Passwords must be at least 6 characters.</span>
               <p>
                 To verify your number, we will send you a text message with a
                 temporary code. Message and data rates may apply.
@@ -108,9 +123,8 @@ const SignUp = () => {
           </form>
           <div className="term-condition">
             <span>
-              {" "}
               By creating an account or logging in, you agree to Amazon’s
-              Conditions of Use and Privacy-Policy .
+              Conditions of Use and Privacy Policy.
             </span>
           </div>
         </div>
@@ -129,6 +143,7 @@ const SignUp = () => {
         </ul>
         <span>© 1996-2024, Amazon.com, Inc. or its affiliates</span>
       </footer>
+      <ToastContainer />
     </>
   );
 };
