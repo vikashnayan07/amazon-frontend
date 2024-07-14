@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Navbar from "./navbar";
+import CategoryBar from "./categoryBar";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -29,15 +31,17 @@ const ProductDetail = () => {
 
   return (
     <>
-      <div class="grid-container">
-        <div class="grid-item-1">
+      <Navbar />
+      <CategoryBar />
+      <div class="grid-containers">
+        <div class="grids-items-1">
           <img
             src={product.thumbnail}
             alt={product.title}
             className="product-image"
           />
         </div>
-        <div class="grid-item-2">
+        <div class="grids-items-2">
           <h1 className="productInfo-title">{product.title}</h1>
 
           <p className="productInfo-category">Category: {product.category}</p>

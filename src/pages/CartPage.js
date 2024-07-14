@@ -105,6 +105,27 @@ const CartPage = () => {
               <option>EMI available</option>
             </select>
           </div>
+          <div className="feed-card-2">
+            <div className="grids-item-2">
+              <h3>Your recently viewed items</h3>
+              <div className="card-special">
+                {cart.map((item) => (
+                  <div key={item.id} className="cart-special-item">
+                    <div className="items-image">
+                      <img src={item.image} alt={item.title} />
+                    </div>
+                    <div className="items-details">
+                      <div className="titles-price">
+                        <span>{item.title}</span>
+                        <p>${item.price}</p>
+                        <button>Add cart</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

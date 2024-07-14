@@ -30,12 +30,16 @@ const Navbar = ({ openSearchPage }) => {
   const handleCartClick = () => {
     navigate("/cart");
   };
+  const handlelogoClick = () => {
+    navigate("/");
+  };
 
   const cartItemCount = cart.reduce((count, item) => count + item.count, 0);
 
   return (
     <nav className="homepage-nav">
       <img
+        onClick={handlelogoClick}
         src="https://i.pinimg.com/736x/47/b7/bd/47b7bdac4285ee24654ca7d68cf06351.jpg"
         className="image-logo"
         alt="Logo"
