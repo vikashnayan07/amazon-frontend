@@ -65,6 +65,8 @@ const App = () => {
     if (isPresent === -1) {
       const newCart = [...cart];
       newCart.push({
+        warranty: elem.warrantyInformation,
+        return: elem.returnPolicy,
         stock: elem.availabilityStatus,
         image: elem.thumbnail,
         title: elem.title,
@@ -88,11 +90,35 @@ const App = () => {
   const appLogin = (user) => {
     setLoggedInUser(user);
   };
+  const increaseQuantity = (id) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, count: item.count + 1 } : item
+      )
+    );
+  };
+
+  const decreaseQuantity = (id) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.id === id ? { ...item, count: item.count - 1 } : item
+        )
+        .filter((item) => item.count > 0)
+    );
+  };
+
+  const removeFromCart = (id) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  };
 
   const contextValues = {
     loggedInUser,
     cart,
     addToCart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
     categories,
     searchText,
     setSearchText,
