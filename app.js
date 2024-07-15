@@ -1,9 +1,9 @@
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./src/globalStyles.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./src/pages/homePage";
 import SearchPage from "./src/pages/amazonSearchPage";
-import { useState } from "react";
 import ProductInfo from "./src/pages/productInfo";
 import AppContext from "./src/context/appContext";
 import SignUp from "./src/pages/singnUp";
@@ -32,18 +32,27 @@ const App = () => {
   const [cart, setCart] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("authorization");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (token && user) {
+      setLoggedInUser(user);
+    }
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: loggedInUser ? <HomePage /> : <SignUp />,
+      element: loggedInUser ? <HomePage /> : <SignIn />,
     },
     {
       path: "/search",
-      element: loggedInUser ? <SearchPage /> : <SignUp />,
+      element: loggedInUser ? <SearchPage /> : <SignIn />,
     },
     {
       path: "/search/:id",
-      element: loggedInUser ? <ProductDetail /> : <SignUp />,
+      element: loggedInUser ? <ProductDetail /> : <SignIn />,
     },
     {
       path: "/signup",
@@ -55,12 +64,11 @@ const App = () => {
     },
     {
       path: "/cart",
-      element: loggedInUser ? <CartPage /> : <SignUp />,
+      element: loggedInUser ? <CartPage /> : <SignIn />,
     },
   ]);
 
   const addToCart = (elem) => {
-    console.log(elem);
     const isPresent = cart.findIndex((cI) => cI.id === elem.id);
     if (isPresent === -1) {
       const newCart = [...cart];
@@ -79,7 +87,7 @@ const App = () => {
       const newCart = cart.map((cartItem) => {
         if (cartItem.id === elem.id) {
           const newCartItem = { ...cartItem };
-          newCartItem.count = newCartItem.count + 1;
+          newCartItem.count += 1;
           return newCartItem;
         } else return cartItem;
       });
@@ -90,6 +98,13 @@ const App = () => {
   const appLogin = (user) => {
     setLoggedInUser(user);
   };
+
+  const appLogout = () => {
+    setLoggedInUser(null);
+    localStorage.removeItem("authorization");
+    localStorage.removeItem("user");
+  };
+
   const increaseQuantity = (id) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
@@ -123,12 +138,13 @@ const App = () => {
     searchText,
     setSearchText,
     appLogin,
+    appLogout,
   };
   console.log("state", loggedInUser);
 
   return (
     <AppContext.Provider value={contextValues}>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
       <Toaster />
     </AppContext.Provider>
   );

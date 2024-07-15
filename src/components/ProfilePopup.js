@@ -1,7 +1,9 @@
-// ProfilePopup.js
-import React from "react";
+import React, { useContext } from "react";
+import AppContext from "../context/appContext";
 
 const ProfilePopup = ({ closePopup }) => {
+  const { appLogout } = useContext(AppContext);
+
   return (
     <div className="profile-popup">
       <ul>
@@ -9,7 +11,12 @@ const ProfilePopup = ({ closePopup }) => {
         <li>Account</li>
         <li>Settings</li>
         <li>Help</li>
-        <li onClick={closePopup}>
+        <li
+          onClick={() => {
+            appLogout();
+            closePopup();
+          }}
+        >
           <div className="logout-button">Logout</div>
         </li>
       </ul>

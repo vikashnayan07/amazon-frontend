@@ -18,11 +18,11 @@ const useLogin = () => {
     if (data.message === "Login successful") {
       appLogin(data.data.user);
       localStorage.setItem("authorization", data.data.token);
+      localStorage.setItem("user", JSON.stringify(data.data.user));
       toast.success("Login successful");
     } else {
       toast.error("Invalid email or password");
     }
-
     console.log(data);
   };
   return { userSignin };
