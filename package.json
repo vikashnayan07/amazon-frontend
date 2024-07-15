@@ -1,14 +1,11 @@
 {
-  "name": "day19",
+  "name": "my-amazon-clone",
   "version": "1.0.0",
-  "description": "",
+  "description": "Amazon clone project",
   "scripts": {
-    "start": "rm -r .parcel-cache && parcel index.html",
+    "start": "parcel index.html",
     "build": "parcel build index.html"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
     "parcel": "^2.12.0",
