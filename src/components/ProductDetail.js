@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "./navbar";
 import CategoryBar from "./categoryBar";
 
+import AppContext from "../context/appContext";
+
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+
+  const { addToCart } = useContext(AppContext);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -75,7 +79,14 @@ const ProductDetail = () => {
             <div class="location">
               <label for="location">Location:</label>
             </div>
-            <button class="add-cart">Add to Cart</button>{" "}
+            <button
+              class="add-cart"
+              onClick={() => {
+                addToCart(product);
+              }}
+            >
+              Add to Cart
+            </button>{" "}
             <button class="buy-now">Buy Now</button>
           </div>
         </div>
