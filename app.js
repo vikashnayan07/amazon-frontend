@@ -103,6 +103,8 @@ const App = () => {
     setLoggedInUser(null);
     localStorage.removeItem("authorization");
     localStorage.removeItem("user");
+    setLoggedInUser(null);
+    setCart([]);
   };
 
   const increaseQuantity = (id) => {
