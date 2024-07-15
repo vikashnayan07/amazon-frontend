@@ -63,6 +63,13 @@
   font-family: sans-serif;
   font-size: 14px;
 }
+.location-main {
+  display: flex;
+  gap: 5px;
+}
+.location-main > label {
+  margin-top: 5px;
+}
 .homepage-search-container {
   flex-grow: 1;
   height: 38px;

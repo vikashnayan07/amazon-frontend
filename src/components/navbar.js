@@ -5,6 +5,7 @@ import ProfilePopup from "./ProfilePopup";
 import { FaRegUserCircle } from "react-icons/fa";
 import { BiCartAdd } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { SlLocationPin } from "react-icons/sl";
 
 const Navbar = ({ openSearchPage }) => {
   const { setSearchText, cart, loggedInUser } = useContext(AppContext);
@@ -44,9 +45,15 @@ const Navbar = ({ openSearchPage }) => {
         className="image-logo"
         alt="Logo"
       />
-      <div className="location">
-        <p>Delivering to LPU 144411</p>
-        <span>Update location</span>
+      <div className="location-main">
+        <label>
+          <SlLocationPin />
+        </label>
+        <div className="location">
+          {" "}
+          <p>Delivering to LPU 144411</p>
+          <span>Update location</span>
+        </div>
       </div>
       <div className="homepage-search-container">
         <select>
